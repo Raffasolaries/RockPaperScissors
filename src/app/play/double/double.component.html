@@ -1,0 +1,187 @@
+<div *ngIf="begin">
+  <div style="text-align:center">
+    <h1>
+      Start your double players battle!
+    </h1>
+  </div>
+  <h2 style="text-align:center">
+    Copy the link here below and paste it into any browser
+  </h2>
+  <mat-grid-list *ngIf="!generated" cols="3" rowHeight="4:1">
+    <mat-grid-tile></mat-grid-tile>
+    <mat-grid-tile>
+      <button mat-button style="background-color: purple; color: white" (click)="generateLink()">Generate Link</button>
+    </mat-grid-tile>
+    <mat-grid-tile></mat-grid-tile>
+  </mat-grid-list>
+  <h6 *ngIf="generated" style="text-align:center">
+    <a href="{{urlSecondPlayer}}">{{urlSecondPlayer}}</a>
+  </h6>
+  <mat-grid-list *ngIf="generated" cols="3" rowHeight="4:1">
+    <mat-grid-tile></mat-grid-tile>
+    <mat-grid-tile>
+        <button mat-button style="background-color: purple; color: white" (click)="startSession()">Start Session</button>
+    </mat-grid-tile>
+    <mat-grid-tile></mat-grid-tile>
+  </mat-grid-list>
+</div>
+<div *ngIf="!begin">
+  <div *ngIf="!activatedSecond && !result">
+    <h1 style="text-align: center">First Player</h1>
+    <form [formGroup]="formFirst">
+      <mat-grid-list cols="5" rowHeight="2:1">
+        <mat-radio-group formControlName="option">
+          <mat-grid-tile></mat-grid-tile>
+          <mat-grid-tile>
+            <mat-radio-button value="rock">Rock</mat-radio-button>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-radio-button value="paper">Paper</mat-radio-button>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-radio-button value="scissors">Scissors</mat-radio-button>
+          </mat-grid-tile>
+          <mat-grid-tile></mat-grid-tile>
+        </mat-radio-group>
+      </mat-grid-list>
+      <mat-grid-list cols="3" rowHeight="4:1">
+        <mat-grid-tile></mat-grid-tile>
+        <mat-grid-tile>
+          <button mat-button style="background-color: purple; color: white" (click)="postFirst()">Make your move!</button>
+        </mat-grid-tile>
+        <mat-grid-tile></mat-grid-tile>
+      </mat-grid-list>
+    </form>
+  </div>
+  <div *ngIf="activatedSecond && !result">
+    <h1 style="text-align: center">Second Player</h1>
+    <form [formGroup]="formSecond">
+      <mat-grid-list cols="5" rowHeight="2:1">
+        <mat-radio-group formControlName="option">
+          <mat-grid-tile></mat-grid-tile>
+          <mat-grid-tile>
+            <mat-radio-button value="rock">Rock</mat-radio-button>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-radio-button value="paper">Paper</mat-radio-button>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-radio-button value="scissors">Scissors</mat-radio-button>
+          </mat-grid-tile>
+          <mat-grid-tile></mat-grid-tile>
+        </mat-radio-group>
+      </mat-grid-list>
+      <mat-grid-list cols="3" rowHeight="4:1">
+        <mat-grid-tile></mat-grid-tile>
+        <mat-grid-tile>
+          <button mat-button style="background-color: purple; color: white" (click)="postSecond()">Make your move!</button>
+        </mat-grid-tile>
+        <mat-grid-tile></mat-grid-tile>
+      </mat-grid-list>
+    </form>
+  </div>
+  <div *ngIf="result">
+    <mat-grid-list cols="4" rowHeight="3:1">
+      <mat-grid-tile></mat-grid-tile>
+      <mat-grid-tile>
+        <h3>First Player</h3>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <h3>Second Player</h3>
+      </mat-grid-tile>
+      <mat-grid-tile></mat-grid-tile>
+    </mat-grid-list>
+    <mat-grid-list cols="4" rowHeight="6:1">
+      <mat-grid-tile></mat-grid-tile>
+      <mat-grid-tile>
+        <h3>{{localStorageItem('firstChoice') | uppercase}}</h3>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <h3>{{localStorageItem('secondChoice') | uppercase}}</h3>
+      </mat-grid-tile>
+      <mat-grid-tile></mat-grid-tile>
+    </mat-grid-list>
+    <mat-grid-list cols="3" rowHeight="4:1">
+      <mat-grid-tile></mat-grid-tile>
+      <mat-grid-tile>
+        <h2>{{resultMessage}}</h2>
+      </mat-grid-tile>
+      <mat-grid-tile></mat-grid-tile>
+    </mat-grid-list>
+    <mat-grid-list cols="3" rowHeight="4:1">
+      <mat-grid-tile></mat-grid-tile>
+      <mat-grid-tile>
+        <button mat-button style="background-color: purple; color: white" (click)="reset()">Play again!</button>
+      </mat-grid-tile>
+      <mat-grid-tile></mat-grid-tile>
+    </mat-grid-list>
+  </div>
+</div>
+
+
+
+<!-- <div *ngIf="!chosen">
+    <form [formGroup]="formChoose">
+      <mat-grid-list cols="5" rowHeight="2:1">
+        <mat-radio-group formControlName="option">
+          <mat-grid-tile></mat-grid-tile>
+          <mat-grid-tile>
+            <mat-radio-button value="rock">Rock</mat-radio-button>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-radio-button value="paper">Paper</mat-radio-button>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-radio-button value="scissors">Scissors</mat-radio-button>
+          </mat-grid-tile>
+          <mat-grid-tile></mat-grid-tile>
+        </mat-radio-group>
+      </mat-grid-list>
+      <mat-grid-list cols="3" rowHeight="4:1">
+        <mat-grid-tile></mat-grid-tile>
+        <mat-grid-tile>
+          <button mat-button style="background-color: purple; color: white" (click)="getOpponent()">Make your move!</button>
+        </mat-grid-tile>
+        <mat-grid-tile></mat-grid-tile>
+      </mat-grid-list>
+    </form>
+  </div>
+  <div *ngIf="chosen">
+    <mat-grid-list cols="4" rowHeight="3:1">
+      <mat-grid-tile></mat-grid-tile>
+      <mat-grid-tile>
+        <h3>First Player</h3>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <h3>Second Player</h3>
+      </mat-grid-tile>
+      <mat-grid-tile></mat-grid-tile>
+    </mat-grid-list>
+    <mat-grid-list cols="4" rowHeight="6:1">
+      <mat-grid-tile></mat-grid-tile>
+      <mat-grid-tile>
+        <h3>{{yourChoice | uppercase}}</h3>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <h3>{{opponentChoice | uppercase}}</h3>
+      </mat-grid-tile>
+      <mat-grid-tile></mat-grid-tile>
+    </mat-grid-list>
+    <mat-grid-list cols="3" rowHeight="4:1">
+      <mat-grid-tile></mat-grid-tile>
+      <mat-grid-tile>
+        <h2>{{resultMessage}}</h2>
+      </mat-grid-tile>
+      <mat-grid-tile></mat-grid-tile>
+    </mat-grid-list>
+    <mat-grid-list cols="3" rowHeight="4:1">
+      <mat-grid-tile></mat-grid-tile>
+      <mat-grid-tile>
+        <button mat-button style="background-color: purple; color: white" (click)="reset()">Play again!</button>
+      </mat-grid-tile>
+      <mat-grid-tile></mat-grid-tile>
+    </mat-grid-list>
+  </div> -->
+  
+  
+  

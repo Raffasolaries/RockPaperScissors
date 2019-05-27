@@ -1,0 +1,31 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center">
+  <h1>
+    Welcome to {{ title }}!
+  </h1>
+</div>
+<h2 style="text-align:center">
+  Choose if you want to play alone or with a friend
+</h2>
+  
+  <form [formGroup]="formChoose">
+    <mat-grid-list cols="4" rowHeight="2:1">
+      <mat-radio-group formControlName="option">
+        <mat-grid-tile></mat-grid-tile>
+        <mat-grid-tile>
+          <mat-radio-button value="single">Single</mat-radio-button>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-radio-button value="double">Double</mat-radio-button>
+        </mat-grid-tile>
+        <mat-grid-tile></mat-grid-tile>
+      </mat-radio-group>
+    </mat-grid-list>
+    <mat-grid-list cols="3" rowHeight="4:1">
+      <mat-grid-tile></mat-grid-tile>
+      <mat-grid-tile>
+        <button mat-button style="background-color: purple; color: white" (click)="begin()">Begin!</button>
+      </mat-grid-tile>
+      <mat-grid-tile></mat-grid-tile>
+    </mat-grid-list>
+  </form>
