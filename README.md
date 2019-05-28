@@ -2,6 +2,14 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.6.
 
+## Install & Run
+
+Inside project path just run `./runScript` in your cli to start the game. If any issue, you can manually run `ng serve --open` and navigate `http://localhost:4200/` in any browser. Enjoy!
+
+## Stop Game
+
+Use combo `Ctrl + C` in your cli to stop the game.
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
