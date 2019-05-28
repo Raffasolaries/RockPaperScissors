@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { FormControl, FormGroupDirective, NgForm, Validators, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 
 import { RobotService } from '../../services/robot.service';
@@ -25,8 +27,8 @@ export class DoubleComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private location: Location,
     private route: ActivatedRoute,
-    private robot: RobotService,
     private results: ResultService
   ) { }
 
@@ -45,15 +47,23 @@ export class DoubleComponent implements OnInit {
     else {
       this.activatedSecond = false;
     }
-    if ((!this.activatedSecond && localStorage.getItem('firstChosen') === 'true') 
+    /* if ((!this.activatedSecond && localStorage.getItem('firstChosen') === 'true') 
       || (this.activatedSecond && localStorage.getItem('secondChosen') === 'true'))
       this.getResult();
-    else this.result = false;
+    else this.result = false; */
+    this.createForm();
+  }
+
+  createForm() {
     this.formFirst = this.fb.group({
       option: ['', [Validators.required]]
     });
     this.formSecond = this.fb.group({
       option: ['', [Validators.required]]
+    });
+    this.getResult().subscribe(res => {
+      this.result = res['result'];
+      this.resultMessage = res['message'];
     });
   }
 
@@ -70,41 +80,65 @@ export class DoubleComponent implements OnInit {
     localStorage.setItem('secondChosen', 'false');
   }
 
-  postFirst() {
-    localStorage.setItem('firstChoice', this.formFirst.value.option);
-    localStorage.setItem('firstChosen', 'true');
-    this.getResult();
+  postValue() {
+    /* localStorage.setItem('firstChoice', this.formFirst.value.option);
+    localStorage.setItem('firstChosen', 'true'); */
+    this.getResult().subscribe(res => {
+      this.result = res['result'];
+      this.resultMessage = res['message'];
+    });
   }
 
   postSecond() {
     console.log('second response')
     localStorage.setItem('secondChoice', this.formSecond.value.option);
     localStorage.setItem('secondChosen', 'true');
-    this.getResult();
+    this.getResult().subscribe(res => {
+      this.result = res['result'];
+      this.resultMessage = res['message'];
+      location.reload();
+    });
   }
 
   getResult() {
-    if ((!this.activatedSecond && localStorage.getItem('firstChosen') === 'true') 
+    return new Observable(observer => {
+      console.log('forms', this.formFirst, this.formSecond)
+      if (!this.activatedSecond && this.formFirst.value.option) {
+        localStorage.setItem('firstChoice', this.formFirst.value.option);
+        localStorage.setItem('firstChosen', 'true');
+      }
+      if (this.activatedSecond && this.formSecond.value.option) {
+        localStorage.setItem('secondChoice', this.formSecond.value.option);
+        localStorage.setItem('secondChosen', 'true');
+      }
+      if ((!this.activatedSecond && localStorage.getItem('firstChosen') === 'true') 
       || (this.activatedSecond && localStorage.getItem('secondChosen') === 'true'))
-      this.result = true;
-    else this.result = false;
-    switch (true) {
-      case localStorage.getItem('firstChosen') !== 'true' 
-        && localStorage.getItem('secondChosen') === 'true': {
-        this.resultMessage = 'waiting for first player ...';
-        break;
+        this.result = true;
+      else this.result = false;
+      switch (true) {
+        case localStorage.getItem('firstChosen') !== 'true' 
+          && localStorage.getItem('secondChosen') === 'true': {
+          this.resultMessage = 'waiting for first player ...';
+          break;
+        }
+        case localStorage.getItem('firstChosen') === 'true' 
+          && localStorage.getItem('secondChosen') !== 'true': {
+          this.resultMessage = 'waiting for second player ...';
+          break;
+        }
+        case localStorage.getItem('firstChosen') === 'true' 
+          && localStorage.getItem('secondChosen') === 'true': {
+          this.resultMessage = this.results.getResult(localStorage.getItem('firstChoice'), localStorage.getItem('secondChoice'));
+          break;
+        }
       }
-      case localStorage.getItem('firstChosen') === 'true' 
-        && localStorage.getItem('secondChosen') !== 'true': {
-        this.resultMessage = 'waiting for second player ...';
-        break;
-      }
-      case localStorage.getItem('firstChosen') === 'true' 
-        && localStorage.getItem('secondChosen') === 'true': {
-        this.resultMessage = this.results.getResult(localStorage.getItem('firstChoice'), localStorage.getItem('secondChoice'));
-        break;
-      }
-    }
+      observer.next({
+        message: this.resultMessage,
+        result: this.result
+      });
+      observer.complete();
+    })
+    
   }
 
   public localStorageItem(id: string): string {
@@ -120,8 +154,15 @@ export class DoubleComponent implements OnInit {
     localStorage.clear();
     localStorage.setItem('begin', 'true');
     localStorage.setItem('secondPlayer', '123456');
+    localStorage.setItem('firstChoice', '');
+    localStorage.setItem('secondChoice', '');
     localStorage.setItem('firstChosen', 'false');
     localStorage.setItem('secondChosen', 'false');
+  }
+
+  dismiss() {
+    this.reset();
+    this.location.back();
   }
 
 }

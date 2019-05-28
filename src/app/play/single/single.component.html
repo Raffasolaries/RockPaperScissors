@@ -1,4 +1,5 @@
 <div *ngIf="!chosen">
+  <h1 style="text-align: center">Player</h1>
   <form [formGroup]="formChoose">
     <mat-grid-list cols="5" rowHeight="2:1">
       <mat-radio-group formControlName="option">
@@ -18,7 +19,7 @@
     <mat-grid-list cols="3" rowHeight="4:1">
       <mat-grid-tile></mat-grid-tile>
       <mat-grid-tile>
-        <button mat-button style="background-color: purple; color: white" (click)="getOpponent()">Make your move!</button>
+        <button mat-button [disabled]="!formChoose.valid" style="background-color: purple; color: white" (click)="getOpponent()">Make your move!</button>
       </mat-grid-tile>
       <mat-grid-tile></mat-grid-tile>
     </mat-grid-list>
@@ -56,6 +57,13 @@
     <mat-grid-tile></mat-grid-tile>
     <mat-grid-tile>
       <button mat-button style="background-color: purple; color: white" (click)="reset()">Play again!</button>
+    </mat-grid-tile>
+    <mat-grid-tile></mat-grid-tile>
+  </mat-grid-list>
+  <mat-grid-list cols="3" rowHeight="4:1">
+    <mat-grid-tile></mat-grid-tile>
+    <mat-grid-tile>
+      <button mat-button style="background-color: black; color: white" (click)="dismiss()">Back</button>
     </mat-grid-tile>
     <mat-grid-tile></mat-grid-tile>
   </mat-grid-list>

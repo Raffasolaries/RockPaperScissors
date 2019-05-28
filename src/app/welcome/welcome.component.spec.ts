@@ -1,6 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Routes } from '@angular/router';
+import { RouterTestingModule } from "@angular/router/testing";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatGridListModule, MatRadioModule } from '@angular/material';
 
 import { WelcomeComponent } from './welcome.component';
+
+const routes: Routes = [
+  {
+    path: '',
+    component: WelcomeComponent,
+    pathMatch: 'full'
+  }
+];
 
 describe('WelcomeComponent', () => {
   let component: WelcomeComponent;
@@ -8,7 +20,14 @@ describe('WelcomeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WelcomeComponent ]
+      declarations: [ WelcomeComponent ],
+      imports: [
+        RouterTestingModule.withRoutes(routes),
+        FormsModule,
+        ReactiveFormsModule,
+        MatGridListModule,
+        MatRadioModule
+      ]
     })
     .compileComponents();
   }));
@@ -23,7 +42,7 @@ describe('WelcomeComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it(`should have as title 'rock-paper-scissors'`, () => {
+  it(`should have as title 'Rock Paper Scissors'`, () => {
     const app = fixture.debugElement.componentInstance;
     expect(app.title).toEqual('Rock Paper Scissors');
   });

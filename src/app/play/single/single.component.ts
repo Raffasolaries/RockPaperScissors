@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { FormControl, FormGroupDirective, NgForm, Validators, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 
 import { RobotService } from '../../services/robot.service';
@@ -19,6 +20,7 @@ export class SingleComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private location: Location,
     private robot: RobotService,
     private results: ResultService
   ) { }
@@ -39,6 +41,11 @@ export class SingleComponent implements OnInit {
 
   reset() {
     this.chosen = false;
+  }
+
+  dismiss() {
+    this.reset();
+    this.location.back();
   }
 
 }

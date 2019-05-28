@@ -24,6 +24,13 @@
     </mat-grid-tile>
     <mat-grid-tile></mat-grid-tile>
   </mat-grid-list>
+  <mat-grid-list cols="3" rowHeight="4:1">
+    <mat-grid-tile></mat-grid-tile>
+    <mat-grid-tile>
+      <button mat-button style="background-color: black; color: white" (click)="dismiss()">Back</button>
+    </mat-grid-tile>
+    <mat-grid-tile></mat-grid-tile>
+  </mat-grid-list>
 </div>
 <div *ngIf="!begin">
   <div *ngIf="!activatedSecond && !result">
@@ -47,7 +54,7 @@
       <mat-grid-list cols="3" rowHeight="4:1">
         <mat-grid-tile></mat-grid-tile>
         <mat-grid-tile>
-          <button mat-button style="background-color: purple; color: white" (click)="postFirst()">Make your move!</button>
+          <button mat-button [disabled]="!formFirst.valid" style="background-color: purple; color: white" (click)="postValue()">Make your move!</button>
         </mat-grid-tile>
         <mat-grid-tile></mat-grid-tile>
       </mat-grid-list>
@@ -74,7 +81,7 @@
       <mat-grid-list cols="3" rowHeight="4:1">
         <mat-grid-tile></mat-grid-tile>
         <mat-grid-tile>
-          <button mat-button style="background-color: purple; color: white" (click)="postSecond()">Make your move!</button>
+          <button mat-button [disabled]="!formSecond.valid" style="background-color: purple; color: white" (click)="postValue()">Make your move!</button>
         </mat-grid-tile>
         <mat-grid-tile></mat-grid-tile>
       </mat-grid-list>
@@ -112,6 +119,13 @@
       <mat-grid-tile></mat-grid-tile>
       <mat-grid-tile>
         <button mat-button style="background-color: purple; color: white" (click)="reset()">Play again!</button>
+      </mat-grid-tile>
+      <mat-grid-tile></mat-grid-tile>
+    </mat-grid-list>
+    <mat-grid-list cols="3" rowHeight="4:1">
+      <mat-grid-tile></mat-grid-tile>
+      <mat-grid-tile>
+        <button mat-button style="background-color: black; color: white" (click)="dismiss()">Back</button>
       </mat-grid-tile>
       <mat-grid-tile></mat-grid-tile>
     </mat-grid-list>
