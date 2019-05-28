@@ -14,6 +14,7 @@ import { ResultService } from 'src/app/services/result.service';
 export class DoubleComponent implements OnInit {
 
   begin = JSON.parse(localStorage.getItem('begin'));
+  params = {};
   generated = false;
   urlSecondPlayer = '';
   activatedSecond = false;
@@ -30,11 +31,12 @@ export class DoubleComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.params = this.route.snapshot.params;
     console.log('params', this.route.snapshot.params, 'uuid in storage', { uuid : localStorage.getItem('secondPlayer') })
     console.log(location.origin)
     console.log('begin ?', localStorage.getItem('begin'), this.begin)
 
-    if (this.route.snapshot.params.uuid.localeCompare(localStorage.getItem('secondPlayer')) === 0) {
+    if (this.params['uuid'] === localStorage.getItem('secondPlayer')) {
       console.log('second player')
       this.activatedSecond = true;
       this.begin = false;
@@ -43,8 +45,8 @@ export class DoubleComponent implements OnInit {
     else {
       this.activatedSecond = false;
     }
-    if ((!this.activatedSecond && localStorage.getItem('firstChosen').localeCompare('true') === 0) 
-      || (this.activatedSecond && localStorage.getItem('secondChosen').localeCompare('true') === 0))
+    if ((!this.activatedSecond && localStorage.getItem('firstChosen') === 'true') 
+      || (this.activatedSecond && localStorage.getItem('secondChosen') === 'true'))
       this.getResult();
     else this.result = false;
     this.formFirst = this.fb.group({
@@ -82,23 +84,23 @@ export class DoubleComponent implements OnInit {
   }
 
   getResult() {
-    if ((!this.activatedSecond && localStorage.getItem('firstChosen').localeCompare('true') === 0) 
-      || (this.activatedSecond && localStorage.getItem('secondChosen').localeCompare('true') === 0))
+    if ((!this.activatedSecond && localStorage.getItem('firstChosen') === 'true') 
+      || (this.activatedSecond && localStorage.getItem('secondChosen') === 'true'))
       this.result = true;
     else this.result = false;
     switch (true) {
-      case localStorage.getItem('firstChosen').localeCompare('true') !== 0 
-        && localStorage.getItem('secondChosen').localeCompare('true') === 0: {
+      case localStorage.getItem('firstChosen') !== 'true' 
+        && localStorage.getItem('secondChosen') === 'true': {
         this.resultMessage = 'waiting for first player ...';
         break;
       }
-      case localStorage.getItem('firstChosen').localeCompare('true') === 0 
-        && localStorage.getItem('secondChosen').localeCompare('true') !== 0: {
+      case localStorage.getItem('firstChosen') === 'true' 
+        && localStorage.getItem('secondChosen') !== 'true': {
         this.resultMessage = 'waiting for second player ...';
         break;
       }
-      case localStorage.getItem('firstChosen').localeCompare('true') === 0 
-        && localStorage.getItem('secondChosen').localeCompare('true') === 0: {
+      case localStorage.getItem('firstChosen') === 'true' 
+        && localStorage.getItem('secondChosen') === 'true': {
         this.resultMessage = this.results.getResult(localStorage.getItem('firstChoice'), localStorage.getItem('secondChoice'));
         break;
       }
@@ -117,6 +119,7 @@ export class DoubleComponent implements OnInit {
     this.activatedSecond = false;
     localStorage.clear();
     localStorage.setItem('begin', 'true');
+    localStorage.setItem('secondPlayer', '123456');
     localStorage.setItem('firstChosen', 'false');
     localStorage.setItem('secondChosen', 'false');
   }

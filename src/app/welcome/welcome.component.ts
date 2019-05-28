@@ -30,6 +30,7 @@ export class WelcomeComponent implements OnInit {
       this.router.navigate(['/single']);
     if (this.formChoose.value.option.localeCompare('double') === 0) {
       localStorage.setItem('begin', 'true');
+      localStorage.setItem('secondPlayer', '123456');
       localStorage.setItem('firstChosen', 'false');
       localStorage.setItem('secondChosen', 'false');
       this.router.navigate(['/double/'+uuid()]);
